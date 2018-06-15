@@ -1,4 +1,4 @@
-package BLC
+package blockchain
 
 import (
 	"testing"

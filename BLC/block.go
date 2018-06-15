@@ -2,10 +2,6 @@ package BLC
 
 import (
   "time"
-  "strconv"
-  "github.com/minichain/utils"
-  "bytes"
-  "crypto/sha256"
 )
 
 type Block struct {
@@ -19,9 +15,12 @@ type Block struct {
   Timestamp int64
   // 5.currentblock Hash
   Hash []byte
+  //nonce
+  Nonce int64
 }
 
 // Set Hash
+/*
 func (block *Block) SetHash() {
   timeStr := strconv.FormatInt(block.Timestamp, 2)
   timeBytes := []byte(timeStr);
@@ -31,13 +30,12 @@ func (block *Block) SetHash() {
   blockBytes := bytes.Join([][]byte{heightBytes, block.PrevBlockHash, block.Data, timeBytes, block.Hash}, []byte{})
   hash := sha256.Sum256(blockBytes)
   block.Hash = hash[:]
-}
+}*/
 
 // create new block
 func NewBlock(data string, height int64, preBlockHash []byte) *Block {
-  block := &Block{height, preBlockHash, []byte(data), time.Now().Unix(), nil}
-  block.SetHash()
-
+  block := &Block{height, preBlockHash, []byte(data), time.Now().Unix(), nil, 0}
+  //block.SetHash()
   return block
 }
 
