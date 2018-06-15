@@ -1,5 +1,7 @@
-all: minimd
+PACKAGES = $(shell go list ./... | grep -v '/vendor/')
 
-minimd:
-		@echo "Building minimd to cmd/minimd/minimd"
-			@go build -o cmd/minimd/minimd cmd/minimd/main.go
+test:
+	@echo "====> Running go test"
+	@go test $(PACKAGES)
+
+.PHONY: test
