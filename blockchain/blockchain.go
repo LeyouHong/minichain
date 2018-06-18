@@ -3,6 +3,7 @@ package blockchain
 import (
 	"github.com/minichain/BLC"
 	"github.com/minichain/consensus"
+	"fmt"
 )
 
 type Blockchain struct {
@@ -13,9 +14,9 @@ func (blc *Blockchain) AddBlockToBlockchain(data string, height int64, preHash [
 	newBlock := BLC.NewBlock(data, height, preHash)
 	//proof of work and return valid hash and nonce
 	pow := consensus.NewProofOfWork(newBlock)
-	hash, nonce := pow.Run()
-	newBlock.Hash = hash[:]
-	newBlock.Nonce = nonce
+	//Add pow feature into new block
+	newBlock = pow.CreateNewPowBlock()
+	fmt.Println()
 	blc.Blocks = append(blc.Blocks, newBlock)
 }
 

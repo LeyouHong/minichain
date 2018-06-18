@@ -2,6 +2,9 @@ package BLC
 
 import (
   "time"
+  "bytes"
+  "encoding/gob"
+  "log"
 )
 
 type Block struct {
@@ -19,18 +22,29 @@ type Block struct {
   Nonce int64
 }
 
-// Set Hash
-/*
-func (block *Block) SetHash() {
-  timeStr := strconv.FormatInt(block.Timestamp, 2)
-  timeBytes := []byte(timeStr);
+func (block *Block) Serialize() []byte {
+  var result bytes.Buffer
 
-  heightBytes := utils.IntToHex(block.Height)
+  encoder := gob.NewEncoder(&result)
+  err := encoder.Encode(block)
+  if err != nil {
+    log.Panic(err)
+  }
 
-  blockBytes := bytes.Join([][]byte{heightBytes, block.PrevBlockHash, block.Data, timeBytes, block.Hash}, []byte{})
-  hash := sha256.Sum256(blockBytes)
-  block.Hash = hash[:]
-}*/
+  return result.Bytes()
+}
+
+func DeSerializeBlock(blockBytes []byte) *Block {
+  var block Block
+
+  docoder := gob.NewDecoder(bytes.NewReader(blockBytes))
+  err := docoder.Decode(&block)
+  if err != nil {
+    log.Panic(err)
+  }
+
+  return &block
+}
 
 // create new block
 func NewBlock(data string, height int64, preBlockHash []byte) *Block {
